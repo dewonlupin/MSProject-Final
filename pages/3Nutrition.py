@@ -5,14 +5,7 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import plotly.express as px
-
-
-# Create the sidebar
-st.sidebar.title("CHF DashBoard")
-
-
-pic = Image.open('Utilities/logo.jpg')
-st.sidebar.image(pic, caption='Luna')
+import plotly.graph_objects as go
 
 
 # Create the sidebar
