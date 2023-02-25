@@ -8,10 +8,7 @@ import pandas as pd
 import numpy as np
 
 
-
-
 # Page setting
-
 st.set_page_config(
     page_title="CHF: Overview",
     page_icon=":dog:",
@@ -56,14 +53,7 @@ b3.metric("Highest temperature", "4")
 b4.metric("Lowest temperature", "5")
 
 
-
-
-
-
-
-
-
-#Dummy data
+#dummy data
 df = pd.DataFrame({
     'date': ['2021-01-01', '2021-01-02', '2021-01-03', '2021-01-04', '2021-01-05', '2021-01-06', '2021-01-07', '2021-01-08', '2021-01-09', '2021-01-10'],
     'sodium_intake': [40, 50, 60, 35, 25, 46, 20, 30, 22, 31]
