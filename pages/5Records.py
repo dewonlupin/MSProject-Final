@@ -8,6 +8,13 @@ import pandas as pd
 import numpy as np
 
 
+'''
+Records
+---------------------------------
+---------------------------------
+'''
+
+
 # Create the sidebar
 st.sidebar.title("CHF DashBoard")
 
@@ -16,11 +23,7 @@ pic = Image.open('Utilities/logo.jpg')
 st.sidebar.image(pic, caption='Luna')
 
 report_df = pd.DataFrame()
-'''
----------------------------------
-Reports
----------------------------------
-'''
+
 
 col1, clo2, col3 = st.columns(3)
 

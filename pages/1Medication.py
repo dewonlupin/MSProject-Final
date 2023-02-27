@@ -10,6 +10,9 @@ import numpy as np
 with open('pages/style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+#creating title for the Medication page
+st.title("Medication")
+
 
 # Create the sidebar
 st.sidebar.title("CHF DashBoard")
@@ -20,6 +23,7 @@ st.sidebar.image(pic, caption='Luna')
 
 #title for the page
 st.title("Medication and Prognosis")
+st.write("---")
 
 
 #assigning columns for metrices

@@ -6,9 +6,20 @@ import pandas as pd
 import numpy as np
 
 
+'''
+Quality Of Life Assessment
+---------------------------------
+---------------------------------
+'''
+
+
 #extracting style sheet
 with open('pages/style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+#creating title for the QLA page
+st.title("Quality of Life Assessment")
+
 
 # Create the sidebar
 st.sidebar.title("CHF DashBoard")
