@@ -1,6 +1,3 @@
-# This is a sample Python script.
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 import streamlit as st
 from PIL import Image
 import plotly.express as px
@@ -15,13 +12,11 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="auto",
     menu_items={
-        'Get Help': 'https://www.extremelycoolapp.com/help',
-        'Report a bug': "https://www.extremelycoolapp.com/bug",
         'About': "Hakuna Matata"
     }
 )
 
-st.title("Overview")
+
 
 # CSS based styling
 with open('Utilities/OverviewStyle.css') as f:
@@ -32,8 +27,19 @@ with open('Utilities/OverviewStyle.css') as f:
 st.sidebar.title("CHF DashBoard")
 
 
+#title for the page
+st.title("Overview")
+
+
+
 pic = Image.open('Utilities/logo.jpg')
 st.sidebar.image(pic, caption='Luna')
+
+
+#title for the page
+st.title("Overview")
+st.write("---")
+
 
 
 col1, col2, col3 = st.columns(3, gap='medium')
