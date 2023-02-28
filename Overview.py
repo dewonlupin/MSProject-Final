@@ -27,13 +27,14 @@ with open('Utilities/OverviewStyle.css') as f:
 st.sidebar.title("CHF DashBoard")
 
 
-#title for the page
-st.title("Overview")
-
+'''
+Overview
+-------------------------
+'''
 
 
 pic = Image.open('Utilities/logo.jpg')
-st.sidebar.image(pic, caption='Luna')
+st.sidebar.image(pic,width=250, caption='Luna')
 
 
 #title for the page
