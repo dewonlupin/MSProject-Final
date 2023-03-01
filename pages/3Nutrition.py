@@ -214,7 +214,8 @@ with col_b:
             labels=labels,
             values=values,
             hoverinfo="label+percent",
-            textinfo="percent"
+            textinfo="percent",
+            pull=[0.025, 0.025, 0.025, 0.025]
         ))
 
     # updating the size and alignments of Pie chart
@@ -223,14 +224,14 @@ with col_b:
         width=400,
         height=400,
         margin=dict(
-            l=50,
-            r=50,
-            b=100,
+            l=60,
+            r=5,
+            b=120,
             t=1,
-            pad=4
+            pad=0
         ),
     )
-
+    fig.update_traces(hole=.4)
     # header of the pie chart
     st.header("Macro chart")
 

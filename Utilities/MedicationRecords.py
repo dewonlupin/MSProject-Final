@@ -16,8 +16,6 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 '''
-
-
 import numpy as np
 import pandas as pd
 import datetime
@@ -55,8 +53,6 @@ dosage_guidelines = {
 }
 
 
-
-
 medications = ['Furosemide', 'Enalapril', 'Pimobendan', 'Spironolactone', 'Carvedilol']
 dosages = {
     'Furosemide': [0.5, 2, 2, 8, 4, 12, 6, 20],
@@ -65,6 +61,7 @@ dosages = {
     'Spironolactone': [0.25, 1, 1, 4, 2, 6, 3, 10],
     'Carvedilol': [2.5, 6.25, 6.25, 12.5, 12.5, 25, 25, 50]
 }
+
 
 data = []
 start_date = datetime.date(2020, 11, 21)
@@ -116,6 +113,7 @@ for i in df.index:
     df['Condition'][i] = 'Critical'
     df['NCondition'][i] = -2
 
+
 medic_record = df
 
 medic_record['cough'] = df['Stage']
@@ -139,7 +137,6 @@ for i in range(0,len(cough)):
   draft = probability_populator(draft, stage[i], weight_gain[i], 'weight_gain')
   draft = probability_populator(draft, stage[i], restlessness[i], 'restlessness')
   draft = probability_populator(draft, stage[i], pacing[i], 'pacing')
-
 
 
 '''
