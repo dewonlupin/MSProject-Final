@@ -1,76 +1,82 @@
+import altair as alt
+from vega_datasets import data
 import streamlit as st
-from PIL import Image
-import plotly.express as px
 import pandas as pd
 import numpy as np
+from PIL import Image
+import plotly.express as px
+import plotly.graph_objects as go
+import pandas as pd
+from datetime import datetime, timedelta
 
 
-# Page setting
-st.set_page_config(
-    page_title="CHF: Overview",
-    page_icon=":dog:",
-    layout="wide",
-    initial_sidebar_state="auto",
-    menu_items={
-        'About': "Hakuna Matata"
-    }
-)
-
-
-
-# CSS based styling
-with open('Utilities/OverviewStyle.css') as f:
-    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-
-# Create the sidebar
-st.sidebar.title("CHF DashBoard")
-
-
+# creating title for the Nutrition page
 '''
 Overview
 -------------------------
 '''
 
 
+# Create the sidebar
+st.sidebar.title("CHF DashBoard")
+
+# Importing Image inside the sidebar
 pic = Image.open('Utilities/logo.jpg')
-st.sidebar.image(pic,width=250, caption='Luna')
+
+# placing imported image to the sidebar
+st.sidebar.image(pic, caption='Luna')
 
 
-#title for the page
-st.title("Overview")
+# importing CSS layouts for Nutrition tab
+with open('pages/style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
 st.write("---")
 
 
-
-col1, col2, col3 = st.columns(3, gap='medium')
-
 # Row A
 a1, a2, a3 = st.columns(3)
-a1.metric("Humidity", "1"+"%")
-a2.metric("Feels like", "2")
-a3.metric("Highest temperature", "4")
+a1.metric("Current Stage", "A")
+a2.metric("Average Sodium Intake", "46")
+a3.metric("Current Furosemide intake", "3.125")
 
 
 # Row B
 b1, b2, b3, b4 = st.columns(4)
-b1.metric("Humidity", "1"+"%")
-b2.metric("Feels like", "2")
-b3.metric("Highest temperature", "4")
-b4.metric("Lowest temperature", "5")
+b1.metric("Average Heart rate", "120")
+b2.metric("Average Respitory Rate", "25 BpM")
+b3.metric("Optimal Macros Ratio", "5:1:2:3")
+b4.metric("Max Sodium tolerance", "49 mg")
+
+
+
+st.write("---")
+
 
 
 #dummy data
+num_days = 29  # specify the number of days to go back
+start_date = (datetime.now() - timedelta(days=num_days)).strftime('%Y-%m-%d')
+end_date = pd.Timestamp.now().date() + pd.Timedelta(days=1)  # add 1 day to get tomorrow's date as the end date
+date_range = pd.date_range(start=start_date, end=end_date)  # create the date range
+date_list = date_range.date.tolist()
+
+sodium_intake = np.random.randint(high=55, low=40, size=31)
+
 df = pd.DataFrame({
-    'date': ['2021-01-01', '2021-01-02', '2021-01-03', '2021-01-04', '2021-01-05', '2021-01-06', '2021-01-07', '2021-01-08', '2021-01-09', '2021-01-10'],
-    'sodium_intake': [40, 50, 60, 35, 25, 46, 20, 30, 22, 31]
+    'date': date_list,
+    'sodium_intake': sodium_intake
 })
 
+
+
 # Create the line chart
-fig = px.line(df, x='date', y='sodium_intake')
+fig = px.line(df, x="date", y="sodium_intake")
 
 # Add the threshold line
 threshold = 45
+# removing y-axis grid lines
+fig.update_yaxes(showgrid=False, showline=True)
 fig.update_layout(
     shapes=[
         dict(
@@ -88,45 +94,108 @@ fig.update_layout(
         )
     ]
 )
-
+fig.update_layout(yaxis_title=None)
+fig.update_layout(xaxis_title=None)
 
 # Change color of line to red if sodium intake exceeds the threshold
 df_over_threshold = df[df.sodium_intake > threshold]
 for i, row in df_over_threshold.iterrows():
-    fig.add_shape(
-        type='line',
-        x0=row['date'],
-        x1=row['date'],
-        y0=0,
-        y1=row['sodium_intake'],
-        yref='y',
-        layer='above',
-        line=dict(
-            color='red'
-        )
+    # updating the size and alignments of Line chart
+    fig.update_layout(
+        autosize=False,
+        width=300,
+        height=300,
+        margin=dict(
+            l=60,
+            r=5,
+            b=120,
+            t=1,
+            pad=0
+        ),
     )
-# df['threshold'] = df_over_threshold
 
-st.plotly_chart(fig, use_container_width=True)
-st.area_chart(df_over_threshold, use_container_width=True)
+
 
 
 labels = ['Good', 'Bad', 'Average', 'Critical']
 values = [21, 12, 55, 2]
 
 
-fig4 = px.pie(labels, values = values, hole = 0.4,
-              names = labels, color = labels,
-              title = 'Overall Health',
-              color_discrete_map = {'Good':'green',
-                                    'Critical': 'red',
-                            'Bad':'purple',
-                            'Average':'orange'
-             })
-fig4.update_traces(
-                   title_font = dict(size=25,family='Verdana',
-                                     color='darkred'),
-                   hoverinfo='label+percent',
-                   textinfo='percent', textfont_size=20)
 
-st.plotly_chart(fig4)
+# basic initialization of pie chart
+pie = go.Figure(
+    go.Pie(
+        labels=labels,
+        values=values,
+        hoverinfo="label+percent",textinfo="percent",
+            pull=[0.025, 0.025, 0.025, 0.025]
+        ))
+
+# updating the size and alignments of Pie chart
+pie.update_layout(
+    showlegend= False,
+    autosize=False,
+    width=300,
+    height=300,
+    margin=dict(
+        l=6,
+        r=5,
+        b=120,
+        t=1,
+        pad=0
+    ),
+    )
+pie.update_traces(hole=.7)
+
+#dummy data
+weight = np.random.randint(high=75, low=55, size=31)
+#
+# df_2 = pd.DataFrame({
+#     'date': date_list,
+#     'Weight': monthly_weight
+# })
+
+# weight chart
+# basic initialization of pie chart
+weight_chart = go.Figure()
+
+# adding linechart for Weight
+weight_chart.add_trace(go.Bar(x=date_list, y=weight, name='Weight'))
+
+
+weight_chart.update_yaxes(showgrid=False, showline=True)
+
+# updating the size and alignments of Pie chart
+weight_chart.update_layout(
+    autosize=False,
+    width=200,
+    height=300,
+    margin=dict(
+        l=6,
+        r=5,
+        b=120,
+        t=1,
+        pad=0
+    ),
+    )
+
+
+
+# placing all charts in a container
+with st.container():
+    # create 5 columns and 3 rows
+    bcol_1, bcol_2, bcol_3, bcol_4, bcol_5 = st.columns(5, gap='small')
+
+    # sodium intake chart
+    bcol_1.write("Sodium Intake")
+    bcol_1.plotly_chart(fig, use_container_width=False)
+
+    # header of the pie chart
+    bcol_3.write("Overall Health")
+    bcol_3.plotly_chart(pie, use_container_width=False)
+
+    # plotting the final pie chart
+    bcol_5.write("Weight")
+    bcol_5.plotly_chart(weight_chart, use_container_width=False)
+
+

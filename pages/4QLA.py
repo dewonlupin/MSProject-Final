@@ -99,12 +99,16 @@ stage = st.text_input("What is the current stage of your dog?(A:1, B:0, C:-1, D:
 
 checkbox_val = st.checkbox("by checking the box you are agreeing to our terms and conditions")
 
+_,_, c1, c2, *_ = st.columns(6)
 # Every form must have a submit button.
-submitted = st.button("Submit")
-
+submitted = c1.button("Submit")
+reset = c2.button("Reset")
 
 if submitted:
     #st.write(date, medic, stage)
     current_state = condition_classifier(date, medic, stage)
 
-
+if reset:
+    # resets the whole form
+    st.experimental_rerun()
+    st.write("reset has been triggered")
