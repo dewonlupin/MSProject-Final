@@ -12,6 +12,12 @@ Quality Of Life Assessment
 ---------------------------------
 ---------------------------------
 '''
+# Create the sidebar
+st.sidebar.title("CHF DashBoard")
+
+
+pic = Image.open('Utilities/logo.jpg')
+st.sidebar.image(pic, caption='Luna')
 
 
 col1, clo2, col3 = st.columns(3, gap="small")
