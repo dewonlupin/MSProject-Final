@@ -55,13 +55,13 @@ st.write("---")
 
 
 #dummy data
-num_days = 29  # specify the number of days to go back
+num_days = 30  # specify the number of days to go back
 start_date = (datetime.now() - timedelta(days=num_days)).strftime('%Y-%m-%d')
 end_date = pd.Timestamp.now().date() + pd.Timedelta(days=1)  # add 1 day to get tomorrow's date as the end date
 date_range = pd.date_range(start=start_date, end=end_date)  # create the date range
 date_list = date_range.date.tolist()
 
-sodium_intake = np.random.randint(high=55, low=40, size=31)
+sodium_intake = np.random.randint(high=55, low=30, size=num_days+2)
 
 df = pd.DataFrame({
     'date': date_list,
@@ -148,7 +148,7 @@ pie.update_layout(
 pie.update_traces(hole=.7)
 
 #dummy data
-weight = np.random.randint(high=75, low=55, size=31)
+weight = np.random.randint(high=75, low=55, size=num_days+2)
 #
 # df_2 = pd.DataFrame({
 #     'date': date_list,
@@ -179,7 +179,47 @@ weight_chart.update_layout(
     ),
     )
 
+# bar chart for respitory rate and date
+# ----------------------------
+# A	10-20
+# B	20-30
+# C	30-40
+# D	40+
+# ----------------------------
+# dummy data for respitory rate
+resp_intake = np.random.randint(high=40, low=10, size=num_days+2)
 
+resp_data = pd.DataFrame({
+    'date': date_list,
+    'resp_intake': resp_intake
+})
+
+crit_resp_rate = resp_data[resp_data['resp_intake'] >= 30]
+good_resp_rate = resp_data[resp_data['resp_intake'] <= 30]
+# creating bar chart
+resp_chart = go.Figure()
+
+# chart should indicate red when respitory rate is more than 30
+resp_chart.add_trace(go.Bar(x=good_resp_rate['date'], y=good_resp_rate['resp_intake'], name='Good Resp Rate', marker_color = 'green'))
+
+resp_chart.add_trace(go.Bar(x=crit_resp_rate['date'], y=crit_resp_rate['resp_intake'],name='Crit Resp Rate', marker_color = 'red'))
+
+resp_chart.update_yaxes(showgrid=False, showline=True)
+
+# updating the size and alignments of Pie chart
+resp_chart.update_layout(
+    autosize=False,
+    width=300,
+    height=300,
+    margin=dict(
+        l=60,
+        r=5,
+        b=120,
+        t=0,
+        pad=0
+    ),
+    )
+resp_chart.update_traces(showlegend=False)
 
 # placing all charts in a container
 with st.container():
@@ -197,5 +237,11 @@ with st.container():
     # plotting the final pie chart
     bcol_5.write("Weight")
     bcol_5.plotly_chart(weight_chart, use_container_width=False)
+
+    rowb_1, rowb_2 = st.columns([2,5])
+    # plotting the final resp chart
+    rowb_1.write("Resp Rate")
+    rowb_1.plotly_chart(resp_chart, use_container_width=False)
+    #rowb_2.plotly_chart(resp_chart, use_container_width=False)
 
 
