@@ -4,6 +4,7 @@ from PIL import Image
 import plotly.express as px
 import pandas as pd
 import numpy as np
+import os
 
 from Utilities.ConditionClassifier import condition_classifier
 
@@ -60,6 +61,7 @@ medic.append(x)
 
 symp =[]
 
+# cough --> difficulty in breathin --> tiring easily --> swelling --> loss of apetite --> weight gain --> restlessness --> pacing -->
 y = st.text_input("a. Is your dog coughing regularly?(1:Yes/0:No)")
 # text input
 medic.append(y)
@@ -93,6 +95,7 @@ y = st.text_input("h. Does your dog pacing regularly?(1:Yes/0:No)")
 medic.append(y)
 
 
+
 stage = st.text_input("What is the current stage of your dog?(A:1, B:0, C:-1, D:-2)")
 
 # collect all list and pass it to the function like this
@@ -105,16 +108,55 @@ stage = st.text_input("What is the current stage of your dog?(A:1, B:0, C:-1, D:
 
 checkbox_val = st.checkbox("by checking the box you are agreeing to our terms and conditions")
 
+checkbox_store = st.checkbox("If you need to store this entry then please click here")
+
+
 _,_, c1, c2, *_ = st.columns(6)
 # Every form must have a submit button.
 submitted = c1.button("Submit")
 reset = c2.button("Reset")
 
-if submitted:
-    #st.write(date, medic, stage)
-    current_state = condition_classifier(date, medic, stage)
 
+# TODO: check why the if condition is not getting in
+
+# checking if submitted button is pushed and medic only contains 0s and 1s
+if submitted and checkbox_val:
+    st.success("Your form has been submitted please check Summary page!")
+    current_state = condition_classifier(date, medic, stage)
+    st.write("Current state of your dog: ", current_state)
+
+
+# performs a page reset
 if reset:
     # resets the whole form
-    st.experimental_rerun()
     st.write("reset has been triggered")
+    st.experimental_rerun()
+
+if submitted and checkbox_val and checkbox_store:
+    st.write("You selected to store the value")
+    # create a dataframe
+    medication = medic[5:13]
+
+    data = {"Date":date, "cough":medication[0], "difficulty_breathing": medication[1], "tiring_easily":medication[2],
+            "swelling":medication[3], "loss_of_appetite":medication[4], "weight_gain":medication[5],
+            "restlessness":medication[6], "pacing":medication[7], "Enalapril":medic[0],
+            "Pimobendan":medic[1] ,"Furosemide":medic[2], "Spironolactone":medic[3], "Stage":stage,
+            "Predicted State":current_state}
+
+    # enter the value from medic into dataframe
+    # if file exists
+    file_path = "F:\\MS_Project\\MSProject-Final\\Utilities\\user_data.csv"
+    if os.path.exists(file_path):
+        df_in = pd.read_csv(file_path)
+        # newly generated data
+        new_data = pd.DataFrame(data, index=[0])
+        # Append new data to existing dataframe
+        df_in = pd.concat([df_in, new_data], ignore_index=True)
+        # Write updated dataframe back to CSV file
+        df_in.to_csv(file_path, index=False)
+        st.write(df_in)
+
+    else:
+        df_in = pd.DataFrame(data, index=[0])
+        # convert dataframe into csv
+        df_in.to_csv(file_path, index=False)
