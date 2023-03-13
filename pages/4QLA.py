@@ -23,8 +23,9 @@ st.sidebar.image(pic, caption='Luna')
 
 col1, clo2, col3 = st.columns(3, gap="small")
 
-date = col3.date_input('Select todays date for the record')
-col3.write(date)
+date = col3.date_input("Select today's date for the record")
+if date > date.today():
+    col3.error("Please select date prior to today's date.")
 
 col1.write("this page is for your dog's overall health assessment.")
 col1.write("Please fill in the given form given bellow to get health assessment.")
