@@ -1,106 +1,120 @@
-import pandas as pd
-import matplotlib
-from pylab import title, figure, xlabel, ylabel, xticks, bar, legend, axis, savefig
-from fpdf import FPDF
+# generates PDF report from the dashboard
 
-import streamlit as st
-import pandas as pd
-import numpy as np
-
-
-
-from fpdf import FPDF
-
-class PDF(FPDF):
-    def header(self):
-        # Logo
-        self.image('barchart.png', 10, 8, 33)
-        # Arial bold 15
-        self.set_font('Arial', 'B', 15)
-        # Move to the right
-        self.cell(80)
-        # Title
-        self.cell(30, 10, 'Title', 1, 0, 'C')
-        # Line break
-        self.ln(20)
-
-    # Page footer
-    def footer(self):
-        # Position at 1.5 cm from bottom
-        self.set_y(-15)
-        # Arial italic 8
-        self.set_font('Arial', 'I', 8)
-        # Page number
-        self.cell(0, 10, 'Page ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
-
-# Instantiation of inherited class
-pdf = PDF()
-pdf.alias_nb_pages()
-pdf.add_page()
-pdf.set_font('Times', '', 12)
-for i in range(1, 41):
-    pdf.cell(0, 10, 'Printing line number ' + str(i), 0, 1)
-#pdf.output('tuto2.pdf', 'F')
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+from reportlab.lib import colors
+from reportlab.lib.units import inch
 
 
+# paths of all the charts
+card = "ImageData/Carvedilol.png"
+enra = "ImageData/Enalapril.png"
+furo = "ImageData/Furosemide.png"
+pimo = "ImageData/Pimobendan.png"
+spino = "ImageData/Spironolactone.png"
+ovral_cond = "ImageData/OverallCondition.png"
+pie = "ImageData/Pie Chart.png"
+wcs = "ImageData/WCS_chart.png"
 
-#data for chart-1
-chart1_data = pd.DataFrame(
-    np.random.randn(20, 3),
-    columns=['a', 'b', 'c'])
-
-
-
-
-
-df = pd.DataFrame()
-df['Question'] = ["Q1", "Q2", "Q3", "Q4"]
-df['Charles'] = [3, 4, 5, 3]
-df['Mike'] = [3, 3, 4, 4]
+page_size_x = 770
+page_size_y = 770
 
 
-title("Luna's weekly report")
-xlabel('Question Number')
-ylabel('Score')
+# initializing variables with values
+fileName = 'sample.pdf'
+documentTitle = 'sample'
+title = 'Technology'
+subTitle = 'The largest thing now!!'
+textLines = [
+    'Technology makes us aware of',
+    'the world around us.',
+]
+image = 'image.jpg'
 
-c = [2.0, 4.0, 6.0, 8.0]
-m = [x - 0.5 for x in c]
+def add_image(my_canvas, image_path):
 
-xticks(c, df['Question'])
-
-bar(m, df['Mike'], width=0.5, color="#91eb87", label="Mike")
-bar(c, df['Charles'], width=0.5, color="#eb879c", label="Charles")
-
-legend()
-axis([0, 10, 0, 8])
-savefig('barchart.png')
-
-pdf = FPDF()
-pdf.add_page()
-pdf.set_xy(0, 0)
-pdf.set_font('arial', 'B', 12)
-pdf.cell(60)
-pdf.cell(75, 10, "A Tabular and Graphical Report of Luna", 0, 2, 'C')
-
-pdf.cell(90, 10, " ", 0, 2, 'C')
-pdf.cell(-40)
-pdf.cell(50, 10, 'Question', 1, 0, 'C')
-pdf.cell(40, 10, 'Charles', 1, 0, 'C')
-pdf.cell(40, 10, 'Mike', 1, 2, 'C')
-pdf.cell(-90)
-
-pdf.set_font('arial', '', 12)
-
-for i in range(0, len(df)):
-    pdf.cell(50, 10, '%s' % (df['Question'].iloc[i]), 1, 0, 'C')
-    pdf.cell(40, 10, '%s' % (str(df.Mike.iloc[i])), 1, 0, 'C')
-    pdf.cell(40, 10, '%s' % (str(df.Charles.iloc[i])), 1, 2, 'C')
-    pdf.cell(-90)
-pdf.cell(90, 10, " ", 0, 2, 'C')
-pdf.cell(-30)
-
-#enter the image in pdf
-pdf.image('barchart.png', x = None, y = None, w = 0, h = 0, type = '', link = '')
+    my_canvas.drawImage(image_path, 20, 300, width=555, height=300)
+    my_canvas.save()
 
 
-pdf.output('test.pdf', 'F')
+# entry point of PDF Generator
+# takes last value of dataframe, medication columns, symptom columns
+# returns nothing
+def pdf_generator(latest_data, symptoms_for_pdf, medicaiton_for_pdf):
+    # assigning the name and page setting to the file
+    report = canvas.Canvas("Report.pdf", pagesize=A4)
+
+    # designing the top of the PDF's first page
+    report.setTitle("Luna CHF Report")
+
+    # creating the title by setting it's font
+    # and putting it on the canvas
+    report.setFont("Courier-Bold", 14)
+    # page title
+    report.drawCentredString(100, 790, "CHF Summary Report")
+    # -------------------- Start of top --------------------
+    report.setFont("Courier-Bold", 12)
+    report.drawCentredString(47, 770, "Name")
+    report.drawCentredString(44, 760, "Sex")
+    report.drawCentredString(44, 750, "Age")
+    report.drawCentredString(73, 740, "Report Date")
+    report.drawCentredString(79, 730, "Current Stage")
+
+    report.setFont("Courier", 12)
+    report.drawCentredString(168, 770, "Luna")
+    report.drawCentredString(174, 760, "Female")
+    report.drawCentredString(168, 750, "1 yr")
+    report.drawCentredString(193, 740, "Report Date")
+    report.drawCentredString(157, 730, "A")
+
+    report.line(30, 720, 550, 720)
+    # --------------------- End of top ---------------------
+
+
+
+    # setting page number for page 1
+    report.setFont("Courier-Bold", 12)
+    report.line(30, 35, 550, 35)
+    report.drawCentredString(300, 20, "1")
+
+
+
+    report.setFont("Courier", 9)
+    report.drawString(17, 640, "Welcome to Reportlab! This is just a sample ")
+    report.drawString(17, 630, "doc that we need to implement in order to get what we want doc that we need to implement in order to get what we want")
+    report.drawString(17, 620,"What we wanna do next is see how this text goes")
+
+
+    # page-2
+    report.showPage()
+
+    # setting page number for page 1
+    report.setFont("Courier-Bold", 12)
+    report.line(30, 35, 550, 35)
+    report.drawCentredString(300, 20, "2")
+
+    # -------------------- Start of top --------------------
+    report.setFont("Courier-Bold", 12)
+    report.drawCentredString(47, 770, "Name")
+    report.drawCentredString(44, 760, "Sex")
+    report.drawCentredString(44, 750, "Age")
+    report.drawCentredString(73, 740, "Report Date")
+    report.drawCentredString(79, 730, "Current Stage")
+
+    report.setFont("Courier", 12)
+    report.drawCentredString(168, 770, "Luna")
+    report.drawCentredString(174, 760, "Female")
+    report.drawCentredString(168, 750, "1 yr")
+    report.drawCentredString(193, 740, "Report Date")
+    report.drawCentredString(157, 730, "A")
+
+    report.line(30, 720, 550, 720)
+    # --------------------- End of top ---------------------
+
+
+    report.save()
+
+
+# pdf_generator()

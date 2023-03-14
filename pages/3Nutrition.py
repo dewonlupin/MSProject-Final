@@ -202,6 +202,7 @@ with col_a:
     # plotting the final pie chart
     col_a.plotly_chart(fig)
 
+    fig.write_image("Utilities/ImageData/" + "WCS_chart" + ".png")
 
 with col_b:
     # lower second level column Pie chart
@@ -237,3 +238,5 @@ with col_b:
 
     # plotting the final pie chart
     st.plotly_chart(fig)
+
+    fig.write_image("Utilities/ImageData/" + "Pie Chart" + ".png")

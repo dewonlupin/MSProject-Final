@@ -103,7 +103,7 @@ if medic_chart == medication[0]:
              "for treating CHF in dogs, it should be used under a veterinarian's supervision to monitor the "
              "dog's response and for potential side effects or complications."
              )
-
+    fig.write_image("Utilities/ImageData/"+medication[0]+".png")
 
 elif medic_chart == medication[1]:
     chart_name.write(f' {medication[1]}')
@@ -130,6 +130,7 @@ elif medic_chart == medication[1]:
              "performed to monitor the dog's liver function while on the medication. Overall, "
              "Pimobendan can be an effective treatment for dogs with CHF, but should only be used under the "
              "guidance of a veterinarian.")
+    fig.write_image("Utilities/ImageData/" + medication[1] + ".png")
 
 elif medic_chart == medication[2]:
     chart_name.write(f' {medication[2]}')
@@ -158,7 +159,7 @@ elif medic_chart == medication[2]:
              "Furosemide can be an effective medication for managing CHF in dogs, but it should be used "
              "under the guidance of a veterinarian who can monitor the dog's response to the medication "
              "and watch for any potential side effects or complications.")
-
+    fig.write_image("Utilities/ImageData/" + medication[2] + ".png")
 
 elif medic_chart == medication[3]:
     chart_name.write(f' {medication[3]}')
@@ -187,6 +188,8 @@ elif medic_chart == medication[3]:
              "should be closely monitored by a veterinarian to ensure that they are responding well to the medication "
              "and to watch for any potential side effects or complications.")
 
+    fig.write_image("Utilities/ImageData/" + medication[3] + ".png")
+
 elif medic_chart == medication[4]:
     chart_name.write(f' {medication[4]}')
 
@@ -214,6 +217,7 @@ elif medic_chart == medication[4]:
              "Overall, Carvedilol can be an effective medication for treating CHF in dogs, but it should be "
              "used under the guidance of a veterinarian who can monitor the dog's response to the medication and "
              "watch for any potential side effects or complications.")
+    fig.write_image("Utilities/ImageData/" + medication[4] + ".png")
 
 elif medic_chart == "all":
 

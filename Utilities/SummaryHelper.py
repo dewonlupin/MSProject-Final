@@ -43,3 +43,5 @@ class CalProc:
             calander[day_of_year] = converted_condition
 
         return calander
+
+
