@@ -133,9 +133,11 @@ symp_col = user_data.columns[1:9]
 symptoms_for_pdf = []
 
 for symptoms in symp_col:
-  if user_data[symptoms][len(user_data) - 12] == 1:
+  if user_data[symptoms][len(user_data) - 1] == 1:
      symp_col_a.write(symptoms)
      symptoms_for_pdf.append(symptoms)
+
+
 st.write("---")
 if user_data["Predicted State"][len(user_data)-1] == "Good":
     st.subheader("Overall condition for" + user_data["Date"][len(user_data)-1] + ": Good")
@@ -146,16 +148,16 @@ if user_data["Predicted State"][len(user_data)-1] == "Bad":
 if user_data["Predicted State"][len(user_data)-1] == "Critical":
     st.subheader("Overall condition for " + user_data["Date"][len(user_data)-1] + ": Critical")
 
-medication_for_pdf = ['Enalapril', 'Pimobendan', 'Furosemide', 'Spironolactone']
 
 st.write("---")
 _, pdf_gen, _ = st.columns(3)
 
-
+medication_for_pdf = ['Enalapril', 'Pimobendan', 'Furosemide', 'Spironolactone']
 latest_data = user_data.iloc[len(user_data) - 1]
 
 # pass these data to generate pdf
 # symptoms_for_pdf, medicaiton_for_pdf and latest_data
+
 pdfGen.pdf_generator(latest_data, symptoms_for_pdf, medication_for_pdf)
 
 with open("Report.pdf", "rb") as file:
