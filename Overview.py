@@ -242,6 +242,5 @@ with st.container():
     # plotting the final resp chart
     rowb_1.write("Resp Rate")
     rowb_1.plotly_chart(resp_chart, use_container_width=False)
-    #rowb_2.plotly_chart(resp_chart, use_container_width=False)
-
+    # rowb_2.plotly_chart(resp_chart, use_container_width=False)
 
