@@ -70,7 +70,7 @@ st.write("---")
 chart_col, radio_col = st.columns(2, gap= "large")
 
 # one column will have header
-chart_col.header("Monthly nutrition")
+chart_col.header("Nutrition Chart")
 
 # other column will have radio button
 align_radio = radio_col.radio("",('Daily', 'Weekly', 'Monthly'), horizontal=True)

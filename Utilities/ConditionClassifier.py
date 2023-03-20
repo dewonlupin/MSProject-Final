@@ -92,6 +92,36 @@ def condition_classifier(date, medic, stage):
     return current_state
 
 
+# create and train Random Forest Classifier to predict the Overall condition
+# of patent, provided by Stage, Symptoms and Medication as input.
+def ml_model():
+    import pandas as pd
+    from sklearn.ensemble import RandomForestClassifier
 
+    # import dataframe
 
+    # target
+    y = draft['NCondition']
 
+    # input
+    col = draft.columns
+    col_not_in_need = col[0:3]
+
+    X = draft.drop(col_not_in_need, axis=1)
+    X = X.drop(['Category', 'Condition', 'NCondition', 'Dosage'], axis=1)
+
+    model = RandomForestClassifier()
+
+    model.fit(X, y)
+
+    '''
+    ['cough', 'difficulty_breathing', 'tiring_easily', 'swelling',
+           'loss_of_appetite', 'weight_gain', 'restlessness', 'pacing',
+           'Enalapril', 'Pimobendan', 'Furosemide', 'Spironolactone', 'Carvedilol',
+           'Stage_A', 'Stage_B', 'Stage_C', 'Stage_D']
+    '''
+    # [[0,0,0,0,0,0,0,0, 2,1,13,6.5,37.5, 1,0,0,0]] ==> Critical
+
+    # Custom test data
+    new_data = [[0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 13, 6.5, 37.5, 1, 0, 0, 0]]
+    prediction = decode_condition(model.predict(new_data))
